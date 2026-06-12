@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Redirecting...</title>
+  <meta name="robots" content="noindex">
+</head>
+<body>
+  <p>Please wait, redirecting...</p>
+
+  <!-- Honeypot field - hidden from real users via CSS, bots may interact with it -->
+  <form id="check-form" style="position:absolute; left:-9999px;">
+    <input type="text" name="website" id="honeypot" autocomplete="off" tabindex="-1">
+  </form>
+
+  <script>
+    // Time-based check: page must be "viewed" for at least 1 second
+    const startTime = Date.now();
+
+    window.addEventListener('load', function() {
+      setTimeout(function() {
+        const honeypot = document.getElementById('honeypot').value;
+        const elapsed = Date.now() - startTime;
+
+        // If honeypot is filled OR redirect happens too fast, block
+        if (honeypot !== "" || elapsed < 800) {
+          document.body.innerHTML = "<p>Verification failed.</p>";
+          return;
+        }
+
+        // Passed checks — redirect
+        window.location.href = "https://destination-site.com";
+      }, 1000); // 1 second delay
+    });
+  </script>
+</body>
+</html>
